@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "globals.h"
+#include "globals.h"
 
 #define CONN_TIMEOUT 500
 #define CONN_ATTEMPTS 5
@@ -18,7 +18,7 @@ namespace wifi {
 
     //connect to WiFi
     Serial.printf(" Connecting %s ", ssid);
-    M5.Lcd.printf(" Connecting.");
+    M5.Lcd.printf("Connecting.");
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid.c_str(), password.c_str());
@@ -63,11 +63,11 @@ namespace wifi {
   void connected(String ssid){
 
     M5.Lcd.setTextColor(GREEN, BLACK);         
-    M5.Lcd.printf("\n CONNECTED to\n");
+    M5.Lcd.printf("\n\nCONNECTED to\n");
 
     M5.Lcd.setTextColor(WHITE, BLACK);         
-    M5.Lcd.printf("\n %s\n", ssid.c_str());
-    M5.Lcd.printf("\n IP: "); M5.Lcd.println(WiFi.localIP());
+    M5.Lcd.printf("\n%s\n", ssid.c_str());
+    M5.Lcd.printf("\nIP: "); M5.Lcd.println(WiFi.localIP());
 
   } // connected()
 
@@ -76,7 +76,7 @@ namespace wifi {
 
     //init and get the time
     Serial.printf(" Obtaining WWW time..\n");
-    M5.Lcd.printf("\n Obtaining WWW time..");
+    M5.Lcd.printf("\nObtaining WWW time...");
     configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);   // get the internet time
     delay(MESSAGE_DELAY);
 
