@@ -7,6 +7,10 @@ Using the M5 Core S3 to obtain ntp server date and time and display on the LCD s
 3. Change your WiFi credentials in globals.h (the SSID and PWD variables)
 4. Upload the code.
 
+## Operation
+1. The device will connect to the internet and obtain the time and date
+2. Change the screen brightness by tapping the screen
+
 ### Bill of Materials
 
 | Qty   | Description |
