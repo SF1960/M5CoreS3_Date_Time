@@ -1,8 +1,21 @@
 #pragma once
 
+/***************************************************************************
+* globals.h
+* local library to set up constants, variables and definitions
+****************************************************************************/
+
 // Wifi credentials
 #define SSID "TALKTALKB032AA"
 #define PWD "6RGUAHGP"
+
+// colour definitions
+#define colorDarkGrey 0x01EA
+#define colGreen GREEN
+
+// screen brightness variables
+byte brightness[5] = {15, 30, 45, 60, 85};                 // define brightness steps
+byte chosenBrightness = 1;                                 // set to 2nd brightness level
 
 char timeStrbuff[64];                                      // variable for time
 char dateStrbuff[64];                                      // variable for date
@@ -11,12 +24,10 @@ char dayStrbuff[12];                                       // variable for the d
 // array to hold month names
 String month[12] = {"January","February","March","April","May","June","July","August","September","October","November","December"};
 
-// screen size integers
-int width  = 0;
-int height = 0;
+int width  = 0;                                            // width screen size integers
+int height = 0;                                            // height screen size integers
 
-// battery power value
-float battery = 0;
+float battery = 0;                                         // battery power value
 
 // seconds variable for second elapsed bars display
 int seconds = 0;

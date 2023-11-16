@@ -1,5 +1,10 @@
 #pragma once
 
+/***************************************************************************
+* WiFiHelper.h
+* local library to set up and handle the WiFi connections and calls
+****************************************************************************/
+
 #include "globals.h"
 
 #define CONN_TIMEOUT 500

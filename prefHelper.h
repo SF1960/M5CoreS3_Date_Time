@@ -1,5 +1,10 @@
 #pragma once
 
+/***************************************************************************
+* prefHelper.h
+* local library to set up and handle the EEPROM read/write
+****************************************************************************/
+
 #include "globals.h"
 
 namespace states{

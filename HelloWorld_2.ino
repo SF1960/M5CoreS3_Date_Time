@@ -30,20 +30,12 @@
 
 M5GFX display;                                            // set up an object called display
    
-Preferences config;                                       // set up an object called config
+Preferences config;                                       // set up an object called config used to store brightness choice
 
 #include "globals.h"
 #include "M5Helper.h"
 #include "WiFiHelper.h"
 #include "prefHelper.h"
-
-// screen brightness variables
-byte brightness[5] = {15, 30, 45, 60, 85};                 // define brightness steps
-byte chosenBrightness = 1;                                 // set to 2nd brightness level
-
-// colour definitions
-#define colorDarkGrey 0x01EA
-#define colGreen GREEN
 
 /***************************************************************************
 * After M5CoreS3 is started or reset the program in the setUp()
@@ -105,7 +97,7 @@ void loop() {
       seconds = 0;                                         // reset the seconds counter 
       drawBGSecondBars();                                  // draw the background bars for seconds
     }
-    drawSecondBars(seconds++);                             // draw the seconds bar
+    drawSecondBars(seconds);                               // draw the seconds bar
 
   }
 
@@ -114,14 +106,12 @@ void loop() {
 
 } // loop()
 
-/**********************************************************************************
-* draw screen brightness bars
-**********************************************************************************/
+// draw screen brightness bars
 void drawBars(){
 
   // brightness gauge background bars
   for(int i=0; i<5; i++)
-  M5.Lcd.fillRect(10+(i*6), 9, 4, 12, DARKGREEN);
+  M5.Lcd.fillRect(10+(i*6), 9, 4, 12, colorDarkGrey);
 
   // brightness gauge bars
   for(int i=0; i<chosenBrightness+1; i++)
@@ -129,9 +119,7 @@ void drawBars(){
 
 } // drawBars()
 
-/***********************************************************************************
-* draw Second Bars background
-***********************************************************************************/
+// draw Second Bars background in dark grey
 void drawBGSecondBars(){
 
   // brightness gauge background bars
@@ -140,9 +128,7 @@ void drawBGSecondBars(){
 
 } // drawBGSecondBars()
 
-/***********************************************************************************
-*  void draw Second Bars. It displays bars based on secs value
-***********************************************************************************/
+// void draw Second Bars. It displays bars based on secs value/
 void drawSecondBars(int secs){
 
   // brightness gauge bars
@@ -151,9 +137,7 @@ void drawSecondBars(int secs){
 
 } // drawSecondBars()
 
-/**********************************************************************************
-*  Get the time and print to the display
-***********************************************************************************/
+// Get the time and print to the display
 void flushTime() {
   struct tm timeinfo;
   if(!getLocalTime(&timeinfo)){
@@ -170,20 +154,25 @@ void flushTime() {
   char dateMonth[10]; strftime(dateMonth, 10, "%B", &timeinfo);     // set the month
   char dateYear[5];   strftime(dateYear, 5,   "%Y", &timeinfo);     // set the year
 
-  if (timeSecs==00){
-    USBSerial.printf("timeSecs == 00\n");
-    seconds = 0;}
-  //USBSerial.printf("timeSecs: %s\n", timeSecs);
+  // get the number of seconds returned as an integer
+  int msd = timeSecs[0]-'0';                                        // get most significant digit from timeSecs[]
+  int lsd = timeSecs[1]-'0';                                        // get least significant digit from timeSecs[]
+  int tot = (msd*10) + lsd;                                         // add the msd and lsd and store in tot vatiable
+  seconds = tot;                                                    // set the variable seconds to the value of tot
+  if (seconds >= 59){                                               // when greater than or equal to 59
+    seconds=0;                                                      // set the seconds variable to 0
+    drawBGSecondBars();                                             // redraw the background of the second bars
+  }
 
   // Stores real-time time and date data to timeStrbuff and dateStrbuff
-  sprintf(dayStrbuff, "%s", dateDay);
-  sprintf(timeStrbuff, "%s:%s:%s", timeHour, timeMins, timeSecs);
-  sprintf(dateStrbuff, "%s %s %s", dateDate, dateMonth, dateYear);
+  sprintf(dayStrbuff, "%s", dateDay);                              // store the date in dayStrbuff
+  sprintf(timeStrbuff, "%s:%s:%s", timeHour, timeMins, timeSecs);  // store the hour, mins and secs in timeStrbuff
+  sprintf(dateStrbuff, "%s %s %s", dateDate, dateMonth, dateYear); // store the date month and year in the dateStrbuff
 
   // print the date and time
   M5.Lcd.setTextSize(2);                                           // Set the text size. 
-  M5.Lcd.setTextColor(WHITE, BLACK);
-  M5.Lcd.setTextDatum(TC_DATUM);
+  M5.Lcd.setTextColor(WHITE, BLACK);                               // white text on black background
+  M5.Lcd.setTextDatum(TC_DATUM);                                   // set text to top centre
   M5.Lcd.drawString(dayStrbuff, width/2, 60, 1);                   // print the day of the week centred
   M5.Lcd.drawString(dateStrbuff, width/2, 90, 1);                  // print date centred on screen in font 1
   M5.Lcd.setTextSize(1);                                           // Set the text size.  

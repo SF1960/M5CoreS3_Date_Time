@@ -1,11 +1,16 @@
 #pragma once
 
+/***************************************************************************
+* M5Helper.h
+* local library to set up and handle the M5
+****************************************************************************/
+
 #include "globals.h"
 
 namespace coreS3{
 
   void setup(){
-    M5.begin(true, true, false);                             // Init M5CoreS3.  (bool LCDEnable, bool USBSerialEnable, bool I2CEnable)
+    M5.begin(true, true, true);                              // Init M5CoreS3.  (bool LCDEnable, bool USBSerialEnable, bool I2CEnable)
     width = M5.Lcd.width();                                  // save the screen's width
     height = M5.Lcd.height();                                // save the screen's height
     M5.Lcd.setTextSize(2);                                   // Set text size. 
